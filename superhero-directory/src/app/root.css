@@ -4,6 +4,7 @@
 @import "@fontsource/comic-neue/700.css";
 
 @import "tailwindcss";
+@import "@radix-ui/themes/styles.css";
 
 @theme {
   --font-display: "Bangers", "sans-serif";
