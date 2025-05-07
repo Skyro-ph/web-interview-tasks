@@ -1,3 +1,5 @@
+import { Theme } from '@radix-ui/themes';
+
 import { QueryClientProvider } from './react-query';
 
 type Props = {
@@ -5,5 +7,9 @@ type Props = {
 };
 
 export const Providers = ({ children }: Props) => {
-  return <QueryClientProvider>{children}</QueryClientProvider>;
+  return (
+    <Theme accentColor="green" appearance="light">
+      <QueryClientProvider>{children}</QueryClientProvider>
+    </Theme>
+  );
 };
