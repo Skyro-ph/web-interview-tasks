@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { superheroApi } from '~entities/superhero';
-import { Superhero } from '~entities/superhero/superhero';
-import { SuperheroCard } from '~entities/superhero/ui/superhero-card';
+import {
+  Superhero,
+  SuperheroCard,
+  superheroApi,
+  QUERY_STORAGE_KEY,
+} from '~entities/superhero';
 
 import { useDebounce } from '~shared/lib/debounce';
 
@@ -22,6 +25,13 @@ export function SearchSuperheroes() {
     query: debouncedSearchQuery,
   });
 
+  useEffect(() => {
+    const query = localStorage.getItem(QUERY_STORAGE_KEY);
+    if (query) {
+      setSearchQuery(query);
+    }
+  }, []);
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -34,7 +44,7 @@ export function SearchSuperheroes() {
     if (error) {
       return (
         <div className="text-center text-red-500">
-          Error:{' '}
+          Error:
           {error instanceof Error ? error.message : 'Something went wrong'}
         </div>
       );

@@ -16,6 +16,9 @@ export type Params = {
   query: string;
 };
 
+export const QUERY_STORAGE_KEY = 'query';
+export const RESULTS_STORAGE_KEY = 'results';
+
 export function useSearchSuperheros(params: Params) {
   const { query } = params;
 
@@ -23,10 +26,12 @@ export function useSearchSuperheros(params: Params) {
     queryKey: superheroKeys.search(query),
     queryFn: async () => {
       const res = await fetch(
-        `/api-proxy/api/${config.apiToken}/search/${query}`
+        `${config.apiHost}/api/${config.apiToken}/search/${query}`
       );
+      localStorage.setItem(QUERY_STORAGE_KEY, query);
 
       if (!res.ok) {
+        setResultsToLocalStorage([]);
         throw new Error(`HTTP error! status: ${res.status}`);
       }
 
@@ -34,12 +39,23 @@ export function useSearchSuperheros(params: Params) {
         await res.json();
 
       if (data.response === 'error') {
+        setResultsToLocalStorage([]);
         throw new Error(data.error);
       }
 
+      setResultsToLocalStorage(data.results);
+
       return data.results;
+    },
+    initialData: () => {
+      const results = localStorage.getItem(RESULTS_STORAGE_KEY);
+      return results ? JSON.parse(results) : undefined;
     },
     enabled: query.length > 0,
     retry: false,
   });
+}
+
+function setResultsToLocalStorage(results: Superhero[]) {
+  localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify(results));
 }
