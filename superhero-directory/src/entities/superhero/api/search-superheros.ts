@@ -22,23 +22,20 @@ export function useSearchSuperheros(params: Params) {
   return useQuery({
     queryKey: superheroKeys.search(query),
     queryFn: async () => {
-      const response: ResponseSuccess<ResponsePayload> = await fetch(
-        `${config.apiHost}/superhero/name/${query}`
-      )
-        .then(async (res) => {
-          if (!res.ok) {
-            const error: ResponseError = await res.json();
+      const res = await fetch(
+        `/api-proxy/api/${config.apiToken}/search/${query}`
+      );
 
-            throw new Error(
-              `Error ${res.status}: ${res.statusText} - ${error.error}`
-            );
-          }
+      if (!res.ok) {
+        const error: ResponseError = await res.json();
+        throw new Error(
+          `Error ${res.status}: ${res.statusText} - ${error.error}`
+        );
+      }
 
-          return res.json();
-        })
-        .then((res) => res.results);
-
-      return response;
+      const data: ResponseSuccess<ResponsePayload> = await res.json();
+      return data.results;
     },
+    enabled: query.length > 0,
   });
 }
