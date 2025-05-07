@@ -6,7 +6,7 @@ import { SuperheroCard } from '~entities/superhero/ui/superhero-card';
 
 import { useDebounce } from '~shared/lib/debounce';
 
-import { TextField } from '@radix-ui/themes';
+import { Spinner, TextField } from '@radix-ui/themes';
 
 const SEARCH_DEBOUNCE_TIME = 500;
 
@@ -24,7 +24,11 @@ export function SearchSuperheroes() {
 
   const renderContent = () => {
     if (isLoading) {
-      return <div className="text-center">Loading...</div>;
+      return (
+        <div className="flex justify-center">
+          <Spinner size="3" />
+        </div>
+      );
     }
 
     if (error) {
