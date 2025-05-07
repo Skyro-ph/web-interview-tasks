@@ -5,3 +5,5 @@ export const superheroApi = {
   useSuperhero,
   useSearchSuperheros,
 };
+
+export { SuperheroCard } from './ui/superhero-card';
