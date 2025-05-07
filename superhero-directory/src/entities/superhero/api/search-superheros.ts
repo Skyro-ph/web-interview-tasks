@@ -27,15 +27,19 @@ export function useSearchSuperheros(params: Params) {
       );
 
       if (!res.ok) {
-        const error: ResponseError = await res.json();
-        throw new Error(
-          `Error ${res.status}: ${res.statusText} - ${error.error}`
-        );
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
 
-      const data: ResponseSuccess<ResponsePayload> = await res.json();
+      const data: ResponseError | ResponseSuccess<ResponsePayload> =
+        await res.json();
+
+      if (data.response === 'error') {
+        throw new Error(data.error);
+      }
+
       return data.results;
     },
     enabled: query.length > 0,
+    retry: false,
   });
 }
