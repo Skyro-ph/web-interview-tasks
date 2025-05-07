@@ -1,0 +1,31 @@
+export default {
+  tabWidth: 2,
+  singleQuote: true,
+  trailingComma: 'es5',
+  arrowParens: 'always',
+  htmlWhitespaceSensitivity: 'strict',
+  plugins: [
+    '@trivago/prettier-plugin-sort-imports',
+    'prettier-plugin-tailwindcss',
+  ],
+  importOrder: [
+    '^react',
+    '^~app/(.*)$',
+    '^~pages/(.*)$',
+    '^~widgets/(.*)$',
+    '^~features/(.*)$',
+    '^~entities/(.*)$',
+    '^~shared/(.*)$',
+    '<THIRD_PARTY_MODULES>',
+    '^\\./',
+    '^\\.\\.',
+    '\\.css$',
+  ],
+  importOrderSeparation: true,
+  importOrderParserPlugins: [
+    'jsx',
+    'typescript',
+    'classProperties',
+    '["decorators", { "decoratorsBeforeExport": true }]',
+  ],
+};
