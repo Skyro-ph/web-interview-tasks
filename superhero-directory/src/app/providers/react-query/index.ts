@@ -1,4 +1,3 @@
 export {
   QueryClientProvider,
-  StorybookQueryClientProvider,
-} from './query-client';
+} from './ReactQueryProvider';

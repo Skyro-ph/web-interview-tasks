@@ -1,11 +1,11 @@
 import { config } from '~shared/config';
-import { ResponseError, ResponseSuccess } from '~shared/response';
+import { ResponseError, ResponseSuccess } from '~shared/model/response';
 
-import { useQuery } from '@tanstack/react-query';
+import { skipToken, useQuery } from '@tanstack/react-query';
 
 import { superheroKeys } from './keys';
 
-import { Superhero } from '../superhero';
+import { Superhero } from '../model/superhero';
 
 type ResponsePayload = {
   'results-for': string;
@@ -21,24 +21,43 @@ export function useSearchSuperheros(params: Params) {
 
   return useQuery({
     queryKey: superheroKeys.search(query),
-    queryFn: async () => {
-      const response: ResponseSuccess<ResponsePayload> = await fetch(
-        `${config.apiHost}/superhero/name/${query}`
-      )
-        .then(async (res) => {
-          if (!res.ok) {
-            const error: ResponseError = await res.json();
+    queryFn: !query
+      ? skipToken
+      : async () => {
+          const response: ResponseSuccess<ResponsePayload> = await fetch(
+            `${config.apiHost}/api/${config.apiToken}/search/${query}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          ).then(async (res) => {
+            if (!res.ok) {
+              const error: ResponseError = await res.json();
 
-            throw new Error(
-              `Error ${res.status}: ${res.statusText} - ${error.error}`
-            );
-          }
+              throw new Error(error.error);
+            }
 
-          return res.json();
-        })
-        .then((res) => res.results);
+            const result = await res.json();
+            if (result.response === 'error') {
+              const error: ResponseError = result;
 
-      return response;
+              throw new Error(error.error);
+            }
+
+            return result;
+          });
+
+          return response;
+        },
+    retry: (failureCount, error) => {
+      const isNotFoundError = error.message.includes('not found');
+      if (isNotFoundError) {
+        return false;
+      }
+
+      return failureCount < 3;
     },
+    staleTime: 5 * 60 * 1000,
   });
 }

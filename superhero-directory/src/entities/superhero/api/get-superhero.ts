@@ -1,11 +1,11 @@
 import { config } from '~shared/config';
-import { ResponseError, ResponseSuccess } from '~shared/response';
+import { ResponseError, ResponseSuccess } from '~shared/model/response';
 
 import { skipToken, useQuery } from '@tanstack/react-query';
 
 import { superheroKeys } from './keys';
 
-import { Superhero } from '../superhero';
+import { Superhero } from '../model/superhero';
 
 export type Params = {
   id?: string;
@@ -15,7 +15,7 @@ export function useSuperhero(params: Params) {
   const { id } = params;
 
   return useQuery({
-    queryKey: superheroKeys.superhero(id ?? ''),
+    queryKey: superheroKeys.superhero(id ?? 'none'),
     queryFn: id
       ? async () => {
           const response: ResponseSuccess<Superhero> = await fetch(
@@ -34,11 +34,23 @@ export function useSuperhero(params: Params) {
               );
             }
 
-            return res.json();
+            const result = await res.json();
+            if (result.response === 'error') {
+              const error: ResponseError = result;
+
+              throw new Error(error.error);
+            }
+
+            return result;
           });
 
           return response;
         }
       : skipToken,
+    retry: (failureCount) => {
+      return failureCount < 1;
+    },
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false
   });
 }
