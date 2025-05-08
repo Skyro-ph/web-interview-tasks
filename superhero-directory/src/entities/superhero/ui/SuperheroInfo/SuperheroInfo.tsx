@@ -1,25 +1,7 @@
-import { useParams } from 'react-router-dom';
+import { Superhero } from '~entities/superhero/model/superhero';
 
-import { superheroApi } from '~entities/superhero';
-
-export function SuperheroPage() {
-  const { id } = useParams();
-  const {
-    data: superhero,
-    isLoading,
-    error,
-  } = superheroApi.useSuperhero({ id });
-
-  if (isLoading) {
-    return <p className="text-center text-gray-500">Loading...</p>;
-  }
-
-  if (error || !superhero) {
-    return (
-      <p className="text-center text-red-500">Failed to load superhero data.</p>
-    );
-  }
-
+type SuperheroInfo = { superhero: Superhero };
+export const SuperheroInfo = ({ superhero }: SuperheroInfo) => {
   return (
     <article className="mx-auto rounded-md bg-white p-6 shadow-md">
       <header className="mb-6">
@@ -41,7 +23,7 @@ export function SuperheroPage() {
           {Object.entries(superhero.powerstats).map(([key, value]) => (
             <li key={key} className="flex justify-between">
               <span className="font-medium capitalize">{key}:</span>
-              <span>{value}</span>
+              <span>{value === 'null' ? '-' : value}</span>
             </li>
           ))}
         </ul>
@@ -105,4 +87,4 @@ export function SuperheroPage() {
       </section>
     </article>
   );
-}
+};

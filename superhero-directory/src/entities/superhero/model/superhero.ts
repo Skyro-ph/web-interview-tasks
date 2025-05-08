@@ -9,6 +9,7 @@ export type Superhero = {
   image: SuperheroImage;
 };
 
+/** TODO should be properly typed instead of `"null"` string */
 export type Powerstats = {
   intelligence: string;
   strength: string;
