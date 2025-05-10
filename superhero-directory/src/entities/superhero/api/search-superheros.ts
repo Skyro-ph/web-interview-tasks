@@ -1,11 +1,12 @@
-import { config } from '~shared/config';
-import { ResponseError, ResponseSuccess } from '~shared/response';
+import { apiInstance, isApiError, apiConfig } from '~shared/api';
+import { API_RETRY_COUNT } from '~shared/api/config';
+import { ResponseSuccess } from '~shared/api/types';
 
 import { useQuery } from '@tanstack/react-query';
 
 import { superheroKeys } from './keys';
 
-import { Superhero } from '../superhero';
+import { Superhero } from '../model/types';
 
 type ResponsePayload = {
   'results-for': string;
@@ -21,24 +22,22 @@ export function useSearchSuperheros(params: Params) {
 
   return useQuery({
     queryKey: superheroKeys.search(query),
-    queryFn: async () => {
-      const response: ResponseSuccess<ResponsePayload> = await fetch(
-        `${config.apiHost}/superhero/name/${query}`
-      )
-        .then(async (res) => {
-          if (!res.ok) {
-            const error: ResponseError = await res.json();
+    queryFn: async (meta) => {
+      const res = await apiInstance<ResponseSuccess<ResponsePayload>>(
+        `${apiConfig.apiHost}/api/${apiConfig.apiToken}/search/${query}`,
+        {
+          signal: meta.signal,
+        }
+      );
 
-            throw new Error(
-              `Error ${res.status}: ${res.statusText} - ${error.error}`
-            );
-          }
-
-          return res.json();
-        })
-        .then((res) => res.results);
-
-      return response;
+      return res.results;
     },
+    retry: (failureCount, error) => {
+      if (isApiError(error)) {
+        return false;
+      }
+      return failureCount < API_RETRY_COUNT;
+    },
+    enabled: !!query,
   });
 }
