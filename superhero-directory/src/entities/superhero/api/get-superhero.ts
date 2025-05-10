@@ -1,11 +1,12 @@
-import { config } from '~shared/config';
-import { ResponseError, ResponseSuccess } from '~shared/response';
+import { apiInstance, isApiError, apiConfig } from '~shared/api';
+import { API_RETRY_COUNT } from '~shared/api/config';
+import { ResponseSuccess } from '~shared/api/types';
 
-import { skipToken, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { superheroKeys } from './keys';
 
-import { Superhero } from '../superhero';
+import { Superhero } from '../model/types';
 
 export type Params = {
   id?: string;
@@ -16,29 +17,19 @@ export function useSuperhero(params: Params) {
 
   return useQuery({
     queryKey: superheroKeys.superhero(id ?? ''),
-    queryFn: id
-      ? async () => {
-          const response: ResponseSuccess<Superhero> = await fetch(
-            `${config.apiHost}/api/${config.apiToken}/${id}`,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          ).then(async (res) => {
-            if (!res.ok) {
-              const error: ResponseError = await res.json();
-
-              throw new Error(
-                `Error ${res.status}: ${res.statusText} - ${error.error}`
-              );
-            }
-
-            return res.json();
-          });
-
-          return response;
+    queryFn: (meta) =>
+      apiInstance<ResponseSuccess<Superhero>>(
+        `${apiConfig.apiHost}/api/${apiConfig.apiToken}/${id}`,
+        {
+          signal: meta.signal,
         }
-      : skipToken,
+      ),
+    retry: (failureCount, error) => {
+      if (isApiError(error)) {
+        return false;
+      }
+      return failureCount < API_RETRY_COUNT;
+    },
+    enabled: !!id,
   });
 }
