@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Superhero } from '~entities/superhero/model/types';
 
+import { getSuperheroPath } from '~shared/constants/routes';
+
 type Props = {
   hero: Superhero;
 };
@@ -10,7 +12,7 @@ export const SuperheroCard = ({ hero }: Props) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(hero.id);
+    navigate(getSuperheroPath(hero.id));
   };
 
   return (
