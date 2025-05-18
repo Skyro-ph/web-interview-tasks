@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Superhero } from '~entities/superhero/model/types';
+import { Superhero } from '~entities/superhero';
 
 import { SuperheroImageSkeleton } from './superhero-image-skeleton';
 

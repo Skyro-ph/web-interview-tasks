@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 
-import { ROUTER_PATHS } from '~shared/constants';
+import { ROUTER_PATHS } from '~shared/config';
 
 export function Layout() {
   return (

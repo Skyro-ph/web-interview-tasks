@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Superhero } from '~entities/superhero/model/types';
+import { Superhero } from '~entities/superhero';
 
-import { getSuperheroPath } from '~shared/constants/routes';
+import { getSuperheroPath } from '~shared/config';
 
 type Props = {
   hero: Superhero;

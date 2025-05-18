@@ -1,4 +1,4 @@
-import { Superhero } from '~entities/superhero/model/types';
+import { Superhero } from '~entities/superhero';
 
 type Props = {
   work: Superhero['work'];

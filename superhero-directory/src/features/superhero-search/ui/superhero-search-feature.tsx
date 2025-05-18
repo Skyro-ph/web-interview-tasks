@@ -1,6 +1,6 @@
-import { Superhero } from '~entities/superhero/model/types';
+import { Superhero } from '~entities/superhero';
 
-import { isApiError } from '~shared/api/api-error';
+import { isApiError } from '~shared/api';
 import { Loader } from '~shared/ui/loader';
 
 import { HeroSearch } from './hero-search';

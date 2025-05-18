@@ -1,6 +1,6 @@
 import { apiInstance, isApiError, apiConfig } from '~shared/api';
-import { API_RETRY_COUNT } from '~shared/api/config';
-import { ResponseSuccess } from '~shared/api/types';
+import type { ResponseSuccess } from '~shared/api';
+import { API_RETRY_COUNT } from '~shared/api';
 
 import { useQuery } from '@tanstack/react-query';
 

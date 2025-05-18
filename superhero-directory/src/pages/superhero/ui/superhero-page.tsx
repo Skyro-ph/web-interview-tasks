@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 
-import { SuperheroProfile } from '~widgets/superhero-profile/ui/superhero-profile';
-
 import { superheroApi } from '~entities/superhero';
 
 import { BackButton } from '~shared/ui/back-button';
 import { Loader } from '~shared/ui/loader';
+
+import { SuperheroProfile } from './superhero-profile';
 
 export function SuperheroPage() {
   const { id } = useParams();

@@ -1,13 +1,13 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { HomePage } from '~pages/home/home-page';
-import { SuperheroPage } from '~pages/superhero/superhero-page';
+import { HomePage } from '~pages/home';
+import { SuperheroPage } from '~pages/superhero';
 
 import { Layout } from '~widgets/layout';
 
-import { ErrorBoundary } from '~features/error-boundary/ui';
+import { ErrorBoundary } from '~features/error-boundary';
 
-import { ROUTER_PATHS } from '~shared/constants/routes';
+import { ROUTER_PATHS } from '~shared/config';
 
 export const router = createBrowserRouter([
   {

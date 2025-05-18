@@ -1,11 +1,13 @@
-import { Appearance } from '~features/superhero-details/ui/appearance';
-import { Biography } from '~features/superhero-details/ui/biography';
-import { PowerStats } from '~features/superhero-details/ui/power-stats';
-import { SuperheroHeader } from '~features/superhero-details/ui/superhero-header';
-import { SuperheroImage } from '~features/superhero-details/ui/superhero-image';
-import { WorkAndConnections } from '~features/superhero-details/ui/work-and-connections';
+import {
+  SuperheroImage,
+  SuperheroHeader,
+  PowerStats,
+  Biography,
+  Appearance,
+  WorkAndConnections,
+} from '~features/superhero-details';
 
-import { Superhero } from '~entities/superhero/model/types';
+import { Superhero } from '~entities/superhero';
 
 type Props = {
   superhero: Superhero;

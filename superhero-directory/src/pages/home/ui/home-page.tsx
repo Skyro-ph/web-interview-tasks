@@ -1,4 +1,4 @@
-import { SuperheroSearchFeature } from '~features/superhero-search/ui';
+import { SuperheroSearchFeature } from '~features/superhero-search';
 
 export function HomePage() {
   return (
