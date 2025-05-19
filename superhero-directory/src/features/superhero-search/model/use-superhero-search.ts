@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { superheroApi } from '~entities/superhero';
@@ -32,25 +32,16 @@ export const useSuperheroSearch = ({
   );
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    debouncedSetSearchQuery(query);
+    const formattedQuery = query.trim();
+    setSearchQuery(formattedQuery);
+    debouncedSetSearchQuery(formattedQuery);
 
-    if (query) {
-      setSearchParams({ [SEARCH_QUERY_PARAM]: query });
+    if (formattedQuery) {
+      setSearchParams({ [SEARCH_QUERY_PARAM]: formattedQuery });
     } else {
       setSearchParams({});
     }
   };
-
-  // Sync URL with search query on mount
-  useEffect(() => {
-    const queryFromUrl = searchParams.get(SEARCH_QUERY_PARAM);
-    if (queryFromUrl && queryFromUrl !== searchQuery) {
-      setSearchQuery(queryFromUrl);
-      setDebouncedQuery(queryFromUrl);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return {
     searchQuery,

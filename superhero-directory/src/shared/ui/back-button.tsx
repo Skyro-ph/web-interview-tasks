@@ -1,4 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
+import { ROUTER_PATHS } from '~shared/config';
 
 type Props = {
   className?: string;
@@ -7,10 +9,20 @@ type Props = {
 export const BackButton = ({ className = '' }: Props) => {
   const navigate = useNavigate();
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate(ROUTER_PATHS.HOME);
+    }
+  };
+
   return (
-    <button
-      onClick={() => navigate(-1)}
-      className={`group flex cursor-pointer items-center text-gray-600 transition-all duration-200 hover:text-gray-900 ${className}`}
+    <Link
+      to={ROUTER_PATHS.HOME}
+      onClick={handleClick}
+      className={`group inline-flex cursor-pointer items-center text-gray-600 transition-all duration-200 hover:text-gray-900 ${className}`}
     >
       <svg
         className="mr-2 h-5 w-5 transform transition-transform duration-200 group-hover:-translate-x-1"
@@ -27,6 +39,6 @@ export const BackButton = ({ className = '' }: Props) => {
         />
       </svg>
       Back
-    </button>
+    </Link>
   );
 };

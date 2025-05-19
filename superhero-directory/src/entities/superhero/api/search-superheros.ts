@@ -2,7 +2,7 @@ import { apiInstance, isApiError, apiConfig } from '~shared/api';
 import type { ResponseSuccess } from '~shared/api';
 import { API_RETRY_COUNT } from '~shared/api';
 
-import { useQuery } from '@tanstack/react-query';
+import { skipToken, useQuery } from '@tanstack/react-query';
 
 import { superheroKeys } from './keys';
 
@@ -22,22 +22,25 @@ export function useSearchSuperheros(params: Params) {
 
   return useQuery({
     queryKey: superheroKeys.search(query),
-    queryFn: async (meta) => {
-      const res = await apiInstance<ResponseSuccess<ResponsePayload>>(
-        `${apiConfig.apiHost}/api/${apiConfig.apiToken}/search/${query}`,
-        {
-          signal: meta.signal,
-        }
-      );
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    queryFn: query
+      ? async (meta) => {
+          const res = await apiInstance<ResponseSuccess<ResponsePayload>>(
+            `${apiConfig.apiHost}/api/${apiConfig.apiToken}/search/${query}`,
+            {
+              signal: meta.signal,
+            }
+          );
 
-      return res.results;
-    },
+          return res.results;
+        }
+      : skipToken,
     retry: (failureCount, error) => {
       if (isApiError(error)) {
         return false;
       }
       return failureCount < API_RETRY_COUNT;
     },
-    enabled: !!query,
   });
 }

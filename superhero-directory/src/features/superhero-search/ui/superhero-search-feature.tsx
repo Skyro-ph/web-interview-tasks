@@ -13,7 +13,7 @@ export const SuperheroSearchFeature = () => {
     useSuperheroSearch({ debounceMs: 500 });
 
   return (
-    <div>
+    <form>
       <HeroSearch
         value={searchQuery}
         onSearch={handleSearch}
@@ -44,6 +44,6 @@ export const SuperheroSearchFeature = () => {
       {superheroes && superheroes.length === 0 && (
         <p className="text-center text-gray-500">No superheroes found</p>
       )}
-    </div>
+    </form>
   );
 };
