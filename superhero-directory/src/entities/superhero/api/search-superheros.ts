@@ -1,3 +1,4 @@
+/*
 import { config } from '~shared/config';
 import { ResponseError, ResponseSuccess } from '~shared/response';
 
@@ -19,26 +20,8 @@ export type Params = {
 export function useSearchSuperheros(params: Params) {
   const { query } = params;
 
-  return useQuery({
-    queryKey: superheroKeys.search(query),
-    queryFn: async () => {
-      const response: ResponseSuccess<ResponsePayload> = await fetch(
-        `${config.apiHost}/superhero/name/${query}`
-      )
-        .then(async (res) => {
-          if (!res.ok) {
-            const error: ResponseError = await res.json();
-
-            throw new Error(
-              `Error ${res.status}: ${res.statusText} - ${error.error}`
-            );
-          }
-
-          return res.json();
-        })
-        .then((res) => res.results);
-
-      return response;
-    },
-  });
+  // Method documentation: https://superheroapi.com/#name
+  // Example call: GET https://superheroapi.com/api/${access-token}/search/${superhero-name}
+  return useQuery({});
 }
+ */
