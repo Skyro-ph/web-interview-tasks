@@ -5,7 +5,7 @@ import { skipToken, useQuery } from '@tanstack/react-query';
 
 import { superheroKeys } from './keys';
 
-import { Superhero } from '../superhero';
+import { Superhero } from '../types';
 
 export type Params = {
   id?: string;
