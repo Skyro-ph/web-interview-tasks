@@ -1,8 +1,12 @@
 import { useSuperhero } from './api/get-superhero';
 
-// import { useSearchSuperheros } from './api/search-superheros';
+import { useSearchSuperheros } from './api/search-superheros';
 
 export const superheroApi = {
   useSuperhero,
-  // useSearchSuperheros,
+  useSearchSuperheros,
 };
+
+export { SuperheroCard } from './ui/superhero-card';
+export { SuperheroSkeleton } from './ui/superhero-skeleton';
+export { SuperheroSearchResult } from './ui/superhero-search-result';

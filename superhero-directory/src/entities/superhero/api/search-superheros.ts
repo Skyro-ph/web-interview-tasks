@@ -1,27 +1,21 @@
-/*
-import { config } from '~shared/config';
-import { ResponseError, ResponseSuccess } from '~shared/response';
-
-import { useQuery } from '@tanstack/react-query';
-
+import { skipToken, useQuery } from '@tanstack/react-query';
 import { superheroKeys } from './keys';
-
-import { Superhero } from '../superhero';
-
-type ResponsePayload = {
-  'results-for': string;
-  results: Superhero[];
-};
+import { superheroApi } from "./superhero-api";
 
 export type Params = {
   query: string;
 };
 
 export function useSearchSuperheros(params: Params) {
-  const { query } = params;
+  const {query} = params;
+  const normalizedQuery = query.trim().toLowerCase();
 
-  // Method documentation: https://superheroapi.com/#name
-  // Example call: GET https://superheroapi.com/api/${access-token}/search/${superhero-name}
-  return useQuery({});
+  return useQuery({
+    queryKey: superheroKeys.search(normalizedQuery),
+    queryFn: normalizedQuery
+      ? ({ signal }) => superheroApi.search(normalizedQuery, signal)
+      : skipToken,
+    retry: false,
+    staleTime: 1000 * 60 * 15,
+  });
 }
- */
