@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { superheroApi } from '~entities/superhero';
 
-import { debounce } from '~shared/lib/debounce';
+import { useDebouncedCallback } from '~shared/hooks/useDebouncedCallback';
 import { ErrorCard } from '~shared/ui';
 
 export function MainPage() {
@@ -17,14 +17,9 @@ export function MainPage() {
     error,
   } = superheroApi.useSearchSuperheros({ query });
 
-  const debouncedSetParams = useMemo(
-    () =>
-      debounce(
-        (value: string) =>
-          setSearchParams(value ? { q: value } : {}, { replace: true }),
-        300
-      ),
-    [setSearchParams]
+  const debouncedSetParams = useDebouncedCallback<(value: string) => void>(
+    (value) => setSearchParams(value ? { q: value } : {}, { replace: true }),
+    300
   );
 
   useEffect(() => {
