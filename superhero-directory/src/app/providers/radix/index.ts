@@ -1,0 +1,1 @@
+export { RadixThemeProvider } from './theme';

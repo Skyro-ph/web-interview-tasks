@@ -1,3 +1,4 @@
+import { RadixThemeProvider } from './radix';
 import { QueryClientProvider } from './react-query';
 
 type Props = {
@@ -5,5 +6,9 @@ type Props = {
 };
 
 export const Providers = ({ children }: Props) => {
-  return <QueryClientProvider>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider>
+      <RadixThemeProvider>{children}</RadixThemeProvider>
+    </QueryClientProvider>
+  );
 };

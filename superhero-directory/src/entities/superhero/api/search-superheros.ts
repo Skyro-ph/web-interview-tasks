@@ -1,12 +1,11 @@
-/*
-import { config } from '~shared/config';
-import { ResponseError, ResponseSuccess } from '~shared/response';
+import { apiFetch } from '~shared/api/api-fetch';
+import { ApiResponse } from '~shared/api/response';
 
-import { useQuery } from '@tanstack/react-query';
+import { skipToken, useQuery } from '@tanstack/react-query';
 
-import { superheroKeys } from './keys';
+import { superheroQueries } from './superhero.queries';
 
-import { Superhero } from '../superhero';
+import { Superhero } from '../model/types';
 
 type ResponsePayload = {
   'results-for': string;
@@ -20,8 +19,15 @@ export type Params = {
 export function useSearchSuperheros(params: Params) {
   const { query } = params;
 
-  // Method documentation: https://superheroapi.com/#name
-  // Example call: GET https://superheroapi.com/api/${access-token}/search/${superhero-name}
-  return useQuery({});
+  return useQuery({
+    queryKey: superheroQueries.search(query),
+    queryFn:
+      query && query.trim().length > 0
+        ? async ({ signal }) =>
+            apiFetch<ApiResponse<ResponsePayload>>(
+              `/search/${encodeURIComponent(query)}`,
+              { signal }
+            )
+        : skipToken,
+  });
 }
- */

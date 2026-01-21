@@ -6,3 +6,5 @@ export type ResponseError = {
 export type ResponseSuccess<T> = {
   response: 'success';
 } & T;
+
+export type ApiResponse<T> = ResponseSuccess<T> | ResponseError;

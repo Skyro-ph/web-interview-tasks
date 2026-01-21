@@ -5,6 +5,8 @@
 
 @import "tailwindcss";
 
+@import "@radix-ui/themes/styles.css";
+
 @theme {
   --font-display: "Bangers", "sans-serif";
   --font-sans: "Comic Neue", "sans-serif";
