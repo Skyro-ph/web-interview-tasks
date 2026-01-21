@@ -26,6 +26,8 @@ export function MainPage() {
     if (inputRef.current) inputRef.current.value = query;
   }, [query]);
 
+  useEffect(() => () => debouncedSetParams.cancel(), [debouncedSetParams]);
+
   return (
     <div className="mx-auto max-w-2xl p-6">
       <input
