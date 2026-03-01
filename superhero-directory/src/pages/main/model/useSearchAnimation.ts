@@ -32,8 +32,6 @@ export function useSearchAnimation({
       isAnimationInProgressRef.current = true;
 
       try {
-        // No need to manually jump to TOP_VIEWPORT_POSITION because MainPage
-        // renders it there initially if isNavigatingFromSearchPage is true.
         await animateSearchElement(
           searchContainerScope.current,
           CENTER_VIEWPORT_POSITION,

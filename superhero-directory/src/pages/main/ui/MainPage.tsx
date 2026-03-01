@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { SearchForm } from '~entities/search';
 
-import { useSearchAnimation } from './useSearchAnimation';
+import { useSearchAnimation } from '../model';
 
 export function MainPage() {
   const navigate = useNavigate();
