@@ -1,14 +1,17 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { superheroApi } from '~entities/superhero';
+import { useSuperheroByIdQuery } from '~entities/superhero';
 
-export function SuperheroPage() {
+export function SuperheroByIdPage() {
   const { id } = useParams();
-  const {
-    data: superhero,
-    isLoading,
-    error,
-  } = superheroApi.useSuperhero({ id });
+
+  const { data: superhero, isLoading, error } = useSuperheroByIdQuery(id);
+
+  const navigate = useNavigate();
+
+  function onGoBack() {
+    navigate('/');
+  }
 
   if (isLoading) {
     return <p className="text-center text-gray-500">Loading...</p>;
@@ -22,6 +25,10 @@ export function SuperheroPage() {
 
   return (
     <article className="mx-auto rounded-md bg-white p-6 shadow-md">
+      <button type="button" onClick={onGoBack}>
+        go back
+      </button>
+
       <header className="mb-6">
         <img
           src={superhero.image.url}
@@ -35,6 +42,7 @@ export function SuperheroPage() {
           {superhero.biography['full-name']}
         </p>
       </header>
+
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Powerstats</h2>
         <ul className="grid grid-cols-2 gap-4">
@@ -46,6 +54,7 @@ export function SuperheroPage() {
           ))}
         </ul>
       </section>
+
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Biography</h2>
         <p>
@@ -63,27 +72,31 @@ export function SuperheroPage() {
           <strong>Alignment:</strong> {superhero.biography.alignment}
         </p>
       </section>
-      <section className="mb-6">
-        <h2 className="mb-2 text-2xl font-semibold">Appearance</h2>
-        <p>
-          <strong>Gender:</strong> {superhero.appearance.gender}
-        </p>
-        <p>
-          <strong>Race:</strong> {superhero.appearance.race}
-        </p>
-        <p>
-          <strong>Height:</strong> {superhero.appearance.height.join(' / ')}
-        </p>
-        <p>
-          <strong>Weight:</strong> {superhero.appearance.weight.join(' / ')}
-        </p>
-        <p>
-          <strong>Eye Color:</strong> {superhero.appearance['eye-color']}
-        </p>
-        <p>
-          <strong>Hair Color:</strong> {superhero.appearance['hair-color']}
-        </p>
-      </section>
+
+      {superhero.appearance ? (
+        <section className="mb-6">
+          <h2 className="mb-2 text-2xl font-semibold">Appearance</h2>
+          <p>
+            <strong>Gender:</strong> {superhero.appearance.gender}
+          </p>
+          <p>
+            <strong>Race:</strong> {superhero.appearance.race}
+          </p>
+          <p>
+            <strong>Height:</strong> {superhero.appearance.height.join(' / ')}
+          </p>
+          <p>
+            <strong>Weight:</strong> {superhero.appearance.weight.join(' / ')}
+          </p>
+          <p>
+            <strong>Eye Color:</strong> {superhero.appearance['eye-color']}
+          </p>
+          <p>
+            <strong>Hair Color:</strong> {superhero.appearance['hair-color']}
+          </p>
+        </section>
+      ) : null}
+
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Work</h2>
         <p>
@@ -93,6 +106,7 @@ export function SuperheroPage() {
           <strong>Base:</strong> {superhero.work.base}
         </p>
       </section>
+
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Connections</h2>
         <p>

@@ -32,6 +32,15 @@ export const SuperheroAPI = {
       .get<
         ApiResponse<SearchSuperheroResponse>
       >(`/api/${env.API_TOKEN}/search/${name}`)
-      .then(handleApiResponse);
+      .then((res) => {
+        if (res.data.response === 'error') {
+          return {
+            results: [],
+            'results-for': name,
+          };
+        }
+
+        return res.data;
+      });
   },
 };

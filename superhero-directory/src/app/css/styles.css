@@ -4,3 +4,7 @@
 @import "@fontsource/comic-neue/700.css";
 
 @import "tailwindcss" source("../../");
+
+.glow-text {
+    text-shadow: 0 0 40px rgba(148, 163, 184, 0.15);
+}

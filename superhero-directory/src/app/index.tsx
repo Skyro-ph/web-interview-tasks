@@ -1,3 +1,5 @@
+import { Toaster } from 'sonner';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -15,6 +17,7 @@ function mountApp() {
     <StrictMode>
       <TanstackQueryProvider>
         <RoutesProvider />
+        <Toaster richColors position="top-center" />
       </TanstackQueryProvider>
     </StrictMode>
   );

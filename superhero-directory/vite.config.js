@@ -26,13 +26,6 @@ export default defineConfig(({ mode }) => {
       outDir: BUILD_OUT_DIR,
       emptyOutDir: true,
       sourcemap: isDev,
-      minify: !isDev ? 'terser' : false,
-      terserOptions: {
-        compress: {
-          drop_console: !isDev,
-          drop_debugger: !isDev,
-        },
-      },
     },
     server: {
       port: 3000,
