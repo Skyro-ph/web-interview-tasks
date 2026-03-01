@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+
+import { Link } from 'react-router-dom';
 
 import type { Superhero } from '../types';
 
@@ -21,10 +22,7 @@ function getSubtitle(hero: Superhero): string {
   return 'Unknown Origin';
 }
 
-function HeroCard({ hero, index = 0 }: {
-  hero: Superhero;
-  index?: number;
-}) {
+function HeroCard({ hero, index = 0 }: { hero: Superhero; index?: number }) {
   const displaySubtitle = getSubtitle(hero);
 
   function onImageError(e: React.SyntheticEvent<HTMLImageElement, Event>) {
@@ -45,7 +43,7 @@ function HeroCard({ hero, index = 0 }: {
     >
       <Link
         to={`/${hero.id}`}
-        className="block h-full overflow-hidden rounded-xl border-2 border-orange-500/20 bg-[#131418] shadow-md transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 [@media(hover:hover)]:hover:-translate-y-2 [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:border-orange-500/50 [@media(hover:hover)]:hover:shadow-[0_0_30px_rgba(249,115,22,0.3)]"
+        className="block h-full overflow-hidden rounded-xl border-2 border-orange-500/20 bg-[#131418] shadow-md transition-all duration-300 focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:outline-none [@media(hover:hover)]:hover:-translate-y-2 [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:border-orange-500/50 [@media(hover:hover)]:hover:shadow-[0_0_30px_rgba(249,115,22,0.3)]"
       >
         <span className="flex h-full flex-col">
           {/* Image wrapper */}
@@ -60,7 +58,6 @@ function HeroCard({ hero, index = 0 }: {
               />
             </span>
 
-
             {/* Gradient overlay to blend image into background */}
             <span className="absolute inset-x-0 bottom-0 block h-24 bg-gradient-to-t from-[#131418] to-transparent" />
           </span>
@@ -70,7 +67,7 @@ function HeroCard({ hero, index = 0 }: {
 
           {/* Content */}
           <span className="flex flex-1 items-center justify-between p-4">
-            <span className="flex flex-col w-full">
+            <span className="flex w-full flex-col">
               <span className="font-bangers text-2xl tracking-wider text-white transition-colors duration-200 [@media(hover:hover)]:group-hover:text-orange-400">
                 {hero.name}
               </span>

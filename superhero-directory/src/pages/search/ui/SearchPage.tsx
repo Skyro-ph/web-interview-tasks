@@ -1,6 +1,7 @@
+import { motion } from 'framer-motion';
+
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
 
 import { SearchForm } from '~entities/search';
 import {
@@ -34,14 +35,21 @@ function SearchResults({
     return (
       <ul className="grid w-full grid-cols-2 gap-4 max-[400px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {Array.from({ length: 8 }).map((_, i) => (
-          <li key={i} className="h-[400px] animate-pulse rounded-xl border border-white/5 bg-[#1a1412]/60" />
+          <li
+            key={i}
+            className="h-[400px] animate-pulse rounded-xl border border-white/5 bg-[#1a1412]/60"
+          />
         ))}
       </ul>
     );
   }
 
   if (hasSearchError) {
-    return <p className="text-center text-red-500 font-medium">Something went wrong fetching the heroes.</p>;
+    return (
+      <p className="text-center font-medium text-red-500">
+        Something went wrong fetching the heroes.
+      </p>
+    );
   }
 
   const results = searchResultsData?.results ?? [];
@@ -62,8 +70,12 @@ function SearchResults({
         {hasMore && (
           <motion.button
             type="button"
-            className="cursor-pointer flex items-center justify-center rounded-xl bg-yellow-400 px-10 py-3 text-2xl font-bangers tracking-wider text-black border-4 border-black shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-500 uppercase"
-            whileHover={{ x: -1, y: -1, boxShadow: '8px 8px 0px rgba(0,0,0,1)' }}
+            className="font-bangers flex cursor-pointer items-center justify-center rounded-xl border-4 border-black bg-yellow-400 px-10 py-3 text-2xl tracking-wider text-black uppercase shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-300 focus-visible:ring-4 focus-visible:ring-yellow-500 focus-visible:outline-none"
+            whileHover={{
+              x: -1,
+              y: -1,
+              boxShadow: '8px 8px 0px rgba(0,0,0,1)',
+            }}
             whileTap={{ x: 2, y: 2, boxShadow: '0px 0px 0px rgba(0,0,0,1)' }}
             onClick={onLoadMore}
           >
@@ -76,7 +88,7 @@ function SearchResults({
 
   if (searchQuery) {
     return (
-      <p className="text-center text-gray-500 italic mt-8 text-lg">
+      <p className="mt-8 text-center text-lg text-gray-500 italic">
         No heroes found matching "{searchQuery}". Try another name.
       </p>
     );
