@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import { SearchForm } from '~entities/search';
 import {
+  HeroCard,
   type Superhero,
   useSuperheroSearchByNameQuery,
 } from '~entities/superhero';
@@ -17,36 +20,64 @@ function SearchResults({
   searchResultsData?: { results: Superhero[] };
   searchQuery: string;
 }) {
+  const [visibleCount, setVisibleCount] = useState(10);
+
+  useEffect(() => {
+    setVisibleCount(10);
+  }, [searchQuery]);
+
+  function onLoadMore() {
+    setVisibleCount((prev) => prev + 10);
+  }
+
   if (isSearchLoading) {
-    return <p className="text-center text-gray-500">Searching...</p>;
-  }
-
-  if (hasSearchError) {
-    return <p className="text-center text-red-400">Something went wrong.</p>;
-  }
-
-  const hasResults =
-    searchResultsData?.results && searchResultsData.results.length > 0;
-
-  if (hasResults) {
     return (
-      <ul className="grid gap-4">
-        {searchResultsData.results.map((hero) => (
-          <li
-            key={hero.id}
-            className="rounded-xl border border-orange-900/40 bg-[#1a1412]/95 p-4 text-white"
-          >
-            <span className="font-semibold">{hero.name}</span>
-          </li>
+      <ul className="grid w-full grid-cols-2 gap-4 max-[400px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <li key={i} className="h-[400px] animate-pulse rounded-xl border border-white/5 bg-[#1a1412]/60" />
         ))}
       </ul>
     );
   }
 
+  if (hasSearchError) {
+    return <p className="text-center text-red-500 font-medium">Something went wrong fetching the heroes.</p>;
+  }
+
+  const results = searchResultsData?.results ?? [];
+  const hasResults = results.length > 0;
+
+  if (hasResults) {
+    const visibleResults = results.slice(0, visibleCount);
+    const hasMore = visibleCount < results.length;
+
+    return (
+      <div className="flex w-full flex-col items-center gap-10">
+        <ul className="grid w-full grid-cols-2 gap-4 max-[400px]:grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {visibleResults.map((hero, index) => (
+            <HeroCard key={hero.id} hero={hero} index={index} />
+          ))}
+        </ul>
+
+        {hasMore && (
+          <motion.button
+            type="button"
+            className="cursor-pointer flex items-center justify-center rounded-xl bg-yellow-400 px-10 py-3 text-2xl font-bangers tracking-wider text-black border-4 border-black shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-500 uppercase"
+            whileHover={{ x: -1, y: -1, boxShadow: '8px 8px 0px rgba(0,0,0,1)' }}
+            whileTap={{ x: 2, y: 2, boxShadow: '0px 0px 0px rgba(0,0,0,1)' }}
+            onClick={onLoadMore}
+          >
+            Show More
+          </motion.button>
+        )}
+      </div>
+    );
+  }
+
   if (searchQuery) {
     return (
-      <p className="text-center text-gray-500 italic">
-        No heroes found for "{searchQuery}"
+      <p className="text-center text-gray-500 italic mt-8 text-lg">
+        No heroes found matching "{searchQuery}". Try another name.
       </p>
     );
   }
@@ -89,8 +120,8 @@ export function SearchPage() {
   }
 
   return (
-    <div className="flex flex-col items-start">
-      <div className="flex w-full flex-col gap-6 py-8">
+    <div className="flex w-full flex-col pt-8">
+      <div className="sticky top-8 z-20">
         <SearchForm
           value={searchQuery}
           placeholder="Search for a superhero..."
@@ -98,15 +129,15 @@ export function SearchPage() {
           onSubmit={onSearchSubmit}
           onDebounceChange={onSearchDebounceUpdate}
         />
+      </div>
 
-        <div className="px-4">
-          <SearchResults
-            isSearchLoading={isSearchLoading}
-            hasSearchError={hasSearchError}
-            searchResultsData={searchResultsData}
-            searchQuery={searchQuery}
-          />
-        </div>
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 xl:px-8">
+        <SearchResults
+          isSearchLoading={isSearchLoading}
+          hasSearchError={hasSearchError}
+          searchResultsData={searchResultsData}
+          searchQuery={searchQuery}
+        />
       </div>
     </div>
   );

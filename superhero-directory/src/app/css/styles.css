@@ -5,6 +5,14 @@
 
 @import "tailwindcss" source("../../");
 
+body {
+    font-family: "Comic Neue", cursive;
+}
+
+.font-bangers {
+    font-family: "Bangers", system-ui;
+}
+
 .glow-text {
     text-shadow: 0 0 40px rgba(148, 163, 184, 0.15);
 }
