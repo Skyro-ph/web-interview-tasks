@@ -9,6 +9,7 @@ export default {
     'prettier-plugin-tailwindcss',
   ],
   importOrder: [
+    '<THIRD_PARTY_MODULES>',
     '^react',
     '^~app/(.*)$',
     '^~pages/(.*)$',
@@ -16,7 +17,6 @@ export default {
     '^~features/(.*)$',
     '^~entities/(.*)$',
     '^~shared/(.*)$',
-    '<THIRD_PARTY_MODULES>',
     '^\\./',
     '^\\.\\.',
     '\\.css$',
