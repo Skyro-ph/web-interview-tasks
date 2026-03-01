@@ -70,7 +70,7 @@ function InfoRow({
   title,
   value,
 }: {
-  icon: any;
+  icon: React.ElementType;
   title: string;
   value: string | string[];
 }) {

@@ -89,7 +89,7 @@ function SearchResults({
   if (searchQuery) {
     return (
       <p className="mt-8 text-center text-lg text-gray-500 italic">
-        No heroes found matching "{searchQuery}". Try another name.
+        No heroes found matching &quot;{searchQuery}&quot;. Try another name.
       </p>
     );
   }
