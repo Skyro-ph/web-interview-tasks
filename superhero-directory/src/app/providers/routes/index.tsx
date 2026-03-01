@@ -2,14 +2,14 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { MainPageRoute } from '~pages/main';
 import { SearchPageRoute } from '~pages/search';
-import { SuperheroByIdRoute } from '~pages/superhero-by-id';
+import { SuperheroByIdPageRoute } from '~pages/superhero-by-id';
 
 import HeroBGImage from '~shared/assets/hero-bg.webp';
 
 const router = createBrowserRouter([
   MainPageRoute,
   SearchPageRoute,
-  SuperheroByIdRoute,
+  SuperheroByIdPageRoute,
 ]);
 
 function RoutesProvider() {
