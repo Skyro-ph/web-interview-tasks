@@ -1,8 +1,3 @@
-import { useSuperhero } from './api/get-superhero';
-
-// import { useSearchSuperheros } from './api/search-superheros';
-
-export const superheroApi = {
-  useSuperhero,
-  // useSearchSuperheros,
-};
+export { useSuperheroByIdQuery, useSuperheroSearchByNameQuery } from './model';
+export type { Superhero } from './types';
+export { HeroCard } from './ui/HeroCard';

@@ -17,6 +17,11 @@ const gitignorePath = path.resolve(__dirname, '.gitignore');
  * @type {import('eslint').Linter.Config}
  */
 export default [
+  {
+    name: 'app/files-to-ignore',
+    ignores: ['**/dist/**', '**/node_modules/**', '**/coverage/**', '**/css/**', 'vite.config.js'],
+  },
+
   fs.existsSync(gitignorePath) ? includeIgnoreFile(gitignorePath) : {},
   jsPlugin.configs.recommended,
   ...tsPlugin.configs.recommended,
