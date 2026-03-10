@@ -3,7 +3,9 @@ import { persist } from 'zustand/middleware';
 
 interface FavoritesState {
   favorites: string[];
+  showFavorites: boolean;
   toggleFavorite: (id: string) => void;
+  toggleShowFavorites: () => void;
   isFavorite: (id: string) => boolean;
 }
 
@@ -11,6 +13,7 @@ export const useFavoritesStore = create<FavoritesState>()(
   persist(
     (set, get) => ({
       favorites: [],
+      showFavorites: false,
 
       toggleFavorite: (id: string) => {
         const current = get().favorites;
@@ -23,6 +26,10 @@ export const useFavoritesStore = create<FavoritesState>()(
         });
       },
 
+      toggleShowFavorites: () => {
+        set({ showFavorites: !get().showFavorites });
+      },
+
       isFavorite: (id: string) => {
         return get().favorites.includes(id);
       },
@@ -32,3 +39,4 @@ export const useFavoritesStore = create<FavoritesState>()(
     }
   )
 );
+

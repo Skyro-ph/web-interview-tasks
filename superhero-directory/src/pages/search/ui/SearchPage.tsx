@@ -24,8 +24,7 @@ function SearchResults({
   searchQuery: string;
 }) {
   const [visibleCount, setVisibleCount] = useState(10);
-  const [showFavorites, setShowFavorites] = useState(false);
-  const { favorites } = useFavoritesStore();
+  const { favorites, showFavorites, toggleShowFavorites } = useFavoritesStore();
 
   useEffect(() => {
     setVisibleCount(10);
@@ -33,10 +32,6 @@ function SearchResults({
 
   function onLoadMore() {
     setVisibleCount((prev) => prev + 10);
-  }
-
-  function onToggleShowFavorites() {
-    setShowFavorites((prev) => !prev);
   }
 
   if (isSearchLoading) {
@@ -75,7 +70,7 @@ function SearchResults({
         <div className="flex w-full items-center justify-end">
           <button
             type="button"
-            onClick={onToggleShowFavorites}
+            onClick={toggleShowFavorites}
             className={`flex cursor-pointer items-center gap-2.5 rounded-full border-2 px-4 py-2 text-sm font-bold tracking-wide transition-all ${showFavorites
               ? 'border-red-500/50 bg-red-500/10 text-red-400'
               : 'border-white/10 bg-white/5 text-white/50 [@media(hover:hover)]:hover:border-white/20 [@media(hover:hover)]:hover:text-white/70'
@@ -85,7 +80,7 @@ function SearchResults({
               className={`h-4 w-4 transition-colors ${showFavorites ? 'fill-red-500 text-red-500' : ''
                 }`}
             />
-            Показать избранное
+            Show Favorites
           </button>
         </div>
 
