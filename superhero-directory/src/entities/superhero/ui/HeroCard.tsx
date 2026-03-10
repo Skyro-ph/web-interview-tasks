@@ -1,7 +1,9 @@
+import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
 
+import { useFavoritesStore } from '../favorites';
 import type { Superhero } from '../types';
 
 const FALLBACK_IMAGE =
@@ -29,10 +31,18 @@ export function HeroCard({
   hero: Superhero;
   index?: number;
 }) {
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
   const displaySubtitle = getSubtitle(hero);
+  const favorited = isFavorite(hero.id);
 
   function onImageError(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+  }
+
+  function onToggleFavorite(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(hero.id);
   }
 
   return (
@@ -62,6 +72,20 @@ export function HeroCard({
                 onError={onImageError}
               />
             </span>
+
+            <motion.button
+              type="button"
+              whileTap={{ scale: 1.3 }}
+              className="absolute top-3 right-3 z-10 cursor-pointer rounded-full bg-black/40 p-2 backdrop-blur-sm transition-colors [@media(hover:hover)]:hover:bg-black/60"
+              onClick={onToggleFavorite}
+            >
+              <Heart
+                className={`h-5 w-5 transition-colors ${favorited
+                  ? 'fill-red-500 text-red-500'
+                  : 'text-white/60'
+                  }`}
+              />
+            </motion.button>
 
             <span className="absolute inset-x-0 bottom-0 block h-24 bg-gradient-to-t from-[#131418] to-transparent" />
           </span>

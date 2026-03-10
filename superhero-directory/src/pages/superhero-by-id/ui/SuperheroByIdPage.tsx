@@ -7,11 +7,13 @@ import {
   Link as LinkIcon,
   Edit3,
   ArrowLeft,
+  Heart,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useSuperheroByIdQuery } from '~entities/superhero';
+import { useFavoritesStore, useSuperheroByIdQuery } from '~entities/superhero';
 import type { Superhero } from '~entities/superhero/types';
 
 const FALLBACK_IMAGE =
@@ -121,10 +123,17 @@ function AlignmentBadge({ alignment }: { alignment?: string }) {
 export function SuperheroByIdPage() {
   const { id } = useParams();
   const { data: superhero, isLoading, error } = useSuperheroByIdQuery(id);
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
   const navigate = useNavigate();
 
   function onGoBack() {
     navigate(-1);
+  }
+
+  function onToggleFavorite() {
+    if (id) {
+      toggleFavorite(id);
+    }
   }
 
   function onImageError(e: React.SyntheticEvent<HTMLImageElement, Event>) {
@@ -182,9 +191,24 @@ export function SuperheroByIdPage() {
             />
 
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#131418] via-[#131418]/90 to-transparent p-6 lg:hidden">
-              <h1 className="font-bangers text-5xl tracking-wide text-white drop-shadow-md">
-                {superhero.name}
-              </h1>
+              <div className="flex items-start justify-between gap-3">
+                <h1 className="font-bangers text-5xl tracking-wide text-white drop-shadow-md">
+                  {superhero.name}
+                </h1>
+                <motion.button
+                  type="button"
+                  onClick={onToggleFavorite}
+                  whileTap={{ scale: 1.3 }}
+                  className="mt-1 shrink-0 cursor-pointer rounded-full bg-black/40 p-2 backdrop-blur-sm transition-colors [@media(hover:hover)]:hover:bg-black/60"
+                >
+                  <Heart
+                    className={`h-6 w-6 transition-colors ${id && isFavorite(id)
+                        ? 'fill-red-500 text-red-500'
+                        : 'text-white/60'
+                      }`}
+                  />
+                </motion.button>
+              </div>
               <div className="mt-2 flex items-center gap-4">
                 <span className="text-sm font-bold tracking-widest text-orange-500 uppercase">
                   {subtitle}
@@ -197,9 +221,24 @@ export function SuperheroByIdPage() {
 
         <div className="flex flex-1 flex-col gap-8 lg:py-6">
           <div className="hidden lg:block">
-            <h1 className="font-bangers text-6xl tracking-wide text-white drop-shadow-md">
-              {superhero.name}
-            </h1>
+            <div className="flex items-center gap-4">
+              <h1 className="font-bangers text-6xl tracking-wide text-white drop-shadow-md">
+                {superhero.name}
+              </h1>
+              <motion.button
+                type="button"
+                onClick={onToggleFavorite}
+                whileTap={{ scale: 1.3 }}
+                className="shrink-0 cursor-pointer rounded-full bg-white/5 p-3 transition-colors [@media(hover:hover)]:hover:bg-white/10"
+              >
+                <Heart
+                  className={`h-7 w-7 transition-colors ${id && isFavorite(id)
+                      ? 'fill-red-500 text-red-500'
+                      : 'text-white/40'
+                    }`}
+                />
+              </motion.button>
+            </div>
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <span className="text-lg font-bold tracking-widest text-orange-500 uppercase">
                 {subtitle}
