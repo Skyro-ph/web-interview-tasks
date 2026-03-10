@@ -57,7 +57,7 @@ function SearchResults({
 
   const results = searchResultsData?.results ?? [];
   const filteredResults = showFavorites
-    ? results.filter((hero) => favorites.includes(hero.id))
+    ? results.filter((hero) => favorites.has(hero.id))
     : results;
   const hasResults = filteredResults.length > 0;
 

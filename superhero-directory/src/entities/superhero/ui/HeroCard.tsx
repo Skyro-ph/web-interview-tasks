@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
 
-import { useFavoritesStore } from '../favorites';
+import { useFavoritesStore } from '../store';
 import type { Superhero } from '../types';
 
 const FALLBACK_IMAGE =
