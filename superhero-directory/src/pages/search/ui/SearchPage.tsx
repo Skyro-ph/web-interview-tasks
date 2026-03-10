@@ -24,7 +24,9 @@ function SearchResults({
   searchQuery: string;
 }) {
   const [visibleCount, setVisibleCount] = useState(10);
-  const { favorites, showFavorites, toggleShowFavorites } = useFavoritesStore();
+  const favorites = useFavoritesStore((s) => s.favorites);
+  const showFavorites = useFavoritesStore((s) => s.showFavorites);
+  const toggleShowFavorites = useFavoritesStore((s) => s.toggleShowFavorites);
 
   useEffect(() => {
     setVisibleCount(10);

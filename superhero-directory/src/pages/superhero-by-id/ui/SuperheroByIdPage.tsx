@@ -123,7 +123,8 @@ function AlignmentBadge({ alignment }: { alignment?: string }) {
 export function SuperheroByIdPage() {
   const { id } = useParams();
   const { data: superhero, isLoading, error } = useSuperheroByIdQuery(id);
-  const { toggleFavorite, isFavorite } = useFavoritesStore();
+  const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
+  const favorited = useFavoritesStore((s) => (id ? s.favorites.has(id) : false));
   const navigate = useNavigate();
 
   function onGoBack() {
@@ -202,9 +203,9 @@ export function SuperheroByIdPage() {
                   className="mt-1 shrink-0 cursor-pointer rounded-full bg-black/40 p-2 backdrop-blur-sm transition-colors [@media(hover:hover)]:hover:bg-black/60"
                 >
                   <Heart
-                    className={`h-6 w-6 transition-colors ${id && isFavorite(id)
-                        ? 'fill-red-500 text-red-500'
-                        : 'text-white/60'
+                    className={`h-6 w-6 transition-colors ${favorited
+                      ? 'fill-red-500 text-red-500'
+                      : 'text-white/60'
                       }`}
                   />
                 </motion.button>
@@ -232,9 +233,9 @@ export function SuperheroByIdPage() {
                 className="shrink-0 cursor-pointer rounded-full bg-white/5 p-3 transition-colors [@media(hover:hover)]:hover:bg-white/10"
               >
                 <Heart
-                  className={`h-7 w-7 transition-colors ${id && isFavorite(id)
-                      ? 'fill-red-500 text-red-500'
-                      : 'text-white/40'
+                  className={`h-7 w-7 transition-colors ${favorited
+                    ? 'fill-red-500 text-red-500'
+                    : 'text-white/40'
                     }`}
                 />
               </motion.button>

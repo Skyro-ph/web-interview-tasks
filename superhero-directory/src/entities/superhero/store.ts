@@ -6,7 +6,6 @@ interface FavoritesState {
   showFavorites: boolean;
   toggleFavorite: (id: string) => void;
   toggleShowFavorites: () => void;
-  isFavorite: (id: string) => boolean;
 }
 
 export const useFavoritesStore = create<FavoritesState>()(
@@ -30,10 +29,6 @@ export const useFavoritesStore = create<FavoritesState>()(
 
       toggleShowFavorites: () => {
         set({ showFavorites: !get().showFavorites });
-      },
-
-      isFavorite: (id: string) => {
-        return get().favorites.has(id);
       },
     }),
     {

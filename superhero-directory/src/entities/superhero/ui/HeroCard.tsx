@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useFavoritesStore } from '../store';
@@ -24,16 +25,16 @@ function getSubtitle(hero: Superhero): string {
   return 'Unknown Origin';
 }
 
-export function HeroCard({
+export const HeroCard = memo(function HeroCard({
   hero,
   index = 0,
 }: {
   hero: Superhero;
   index?: number;
 }) {
-  const { toggleFavorite, isFavorite } = useFavoritesStore();
+  const toggleFavorite = useFavoritesStore((s) => s.toggleFavorite);
+  const favorited = useFavoritesStore((s) => s.favorites.has(hero.id));
   const displaySubtitle = getSubtitle(hero);
-  const favorited = isFavorite(hero.id);
 
   function onImageError(e: React.SyntheticEvent<HTMLImageElement, Event>) {
     (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
@@ -106,4 +107,4 @@ export function HeroCard({
       </Link>
     </motion.li>
   );
-}
+})
